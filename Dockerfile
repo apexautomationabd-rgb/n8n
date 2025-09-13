@@ -1,8 +1,6 @@
-FROM n8nio/n8n
+FROM n8nio/n8n:latest
 
-# Render sets $PORT automatically, so we bind n8n to it
+# Make sure n8n binds to Render's dynamic port
 ENV N8N_PORT=$PORT
 
-# Start n8n
-ENTRYPOINT ["tini", "--"]
 CMD ["n8n", "start"]
