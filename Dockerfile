@@ -1,23 +1,19 @@
-# Step 1: Use Node.js
 FROM node:18-bullseye
 
-# Step 2: Set working directory
 WORKDIR /usr/src/app
-
-# Step 3: Copy your forked repo into container
 COPY . .
 
-# Step 4: Install dependencies
-RUN npm ci
+# Install yarn
+RUN corepack enable && corepack prepare yarn@stable --activate
 
-# Step 5: Build n8n
-RUN npm run build
+# Install deps with Yarn
+RUN yarn install --frozen-lockfile
 
-# Step 6: Install n8n CLI globally
-RUN npm install -g --legacy-peer-deps ./packages/cli
+# Build n8n
+RUN yarn build
 
-# Step 7: Expose port
+# Install CLI globally
+RUN yarn global add file:packages/cli
+
 EXPOSE 5678
-
-# Step 8: Start n8n
 CMD ["n8n"]
